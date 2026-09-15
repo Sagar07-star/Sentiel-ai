@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel AI</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<main class="app">
+
+    <!-- WELCOME -->
+    <section id="welcome" class="welcome-screen">
+        <div class="welcome-content">
+
+            <div class="brand">
+                <div class="logo">S</div>
+                <span>SENTINEL AI</span>
+            </div>
+
+            <div class="eyebrow">EMAIL THREAT INVESTIGATION</div>
+
+            <h1>
+                Investigate email.<br>
+                <span>Find the evidence.</span>
+            </h1>
+
+            <p class="intro">
+                Securely preserve an .eml file, analyze its identity,
+                authentication, infrastructure, links, attachments and
+                forensic evidence.
+            </p>
+
+            <form id="uploadForm">
+
+                <div id="dropZone" class="upload-box">
+
+                    <div class="upload-icon">↑</div>
+
+                    <h2>Upload email evidence</h2>
+
+                    <p>
+                        Drop an <strong>.eml</strong> file here
+                    </p>
+
+                    <button id="browseButton" type="button" class="secondary-button">
+                        Choose EML File
+                    </button>
+
+                    <input
+                        id="fileInput"
+                        type="file"
+                        accept=".eml,message/rfc822"
+                        hidden
+                    >
+
+                    <div id="fileName" class="selected-file">
+                        No file selected
+                    </div>
+
+                    <button
+                        id="uploadButton"
+                        class="primary-button analyze-button"
+                        type="submit"
+                    >
+                        Analyze Email
+                    </button>
+
+                    <div id="uploadError" class="upload-error" hidden></div>
+
+                    <div class="upload-meta">
+                        SHA-256 preservation
+                        <span>·</span>
+                        Static analysis
+                        <span>·</span>
+                        Max 25 MB
+                    </div>
+
+                </div>
+
+            </form>
+
+            <div class="system-status">
+                <span><i></i> FORENSIC ENGINE READY</span>
+                <span>LOCAL ANALYSIS</span>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ANALYZING -->
+    <section id="analyzing" class="analysis-screen hidden">
+
+        <div class="analysis-content">
+
+            <div class="scanner">
+                <div class="scanner-ring ring-one"></div>
+                <div class="scanner-ring ring-two"></div>
+
+                <div class="scanner-core">
+                    <span>AI</span>
+                </div>
+
+                <div class="scan-line"></div>
+            </div>
+
+            <div class="eyebrow">SENTINEL AI · ANALYZING</div>
+
+            <h1>Investigating evidence</h1>
+
+            <p id="analysisFile">
+                Preparing forensic analysis...
+            </p>
+
+            <div class="analysis-progress">
+                <div id="progressBar"></div>
+            </div>
+
+            <div id="analysisStage" class="analysis-stage">
+                Initializing forensic engine
+            </div>
+
+            <div class="analysis-steps">
+
+                <div id="stepEvidence" class="analysis-step">
+                    <span>01</span>
+                    <div>
+                        <strong>Evidence preservation</strong>
+                        <small>Hashing original evidence</small>
+                    </div>
+                </div>
+
+                <div id="stepHeaders" class="analysis-step">
+                    <span>02</span>
+                    <div>
+                        <strong>Header reconstruction</strong>
+                        <small>Tracing message identity</small>
+                    </div>
+                </div>
+
+                <div id="stepThreat" class="analysis-step">
+                    <span>03</span>
+                    <div>
+                        <strong>Threat analysis</strong>
+                        <small>Correlating security indicators</small>
+                    </div>
+                </div>
+
+                <div id="stepForensics" class="analysis-step">
+                    <span>04</span>
+                    <div>
+                        <strong>Forensic reconstruction</strong>
+                        <small>Building investigation timeline</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- RESULTS -->
+    <section id="results" class="results-screen hidden">
+
+        <header class="results-header">
+
+            <div class="brand result-brand">
+                <div class="logo">S</div>
+                <span>SENTINEL AI</span>
+            </div>
+
+            <div class="header-title">
+                <div class="eyebrow">INVESTIGATION COMPLETE</div>
+                <h1>Forensic investigation</h1>
+            </div>
+
+            <button id="newInvestigation" type="button" class="new-button">
+                + New Investigation
+            </button>
+
+        </header>
+
+
+        <!-- CASE -->
+        <div class="case-bar">
+
+            <div class="case-file">
+                <small>FILE</small>
+                <strong id="caseFilename">—</strong>
+            </div>
+
+            <div class="case-id">
+                <small>CASE ID</small>
+                <strong id="caseId">—</strong>
+            </div>
+
+        </div>
+
+
+        <!-- RISK -->
+        <section class="risk-strip">
+
+            <div class="risk-score-block">
+
+                <div class="risk-heading">
+                    <span>RISK SCORE</span>
+                    <span id="riskVerdict">—</span>
+                </div>
+
+                <div class="risk-value-row">
+                    <strong id="riskScore" class="risk-number risk-safe">0</strong>
+                    <span>/100</span>
+                </div>
+
+            </div>
+
+            <div class="risk-stat">
+                <small>VERDICT</small>
+                <strong id="verdict">—</strong>
+            </div>
+
+            <div class="risk-stat">
+                <small>THREATS</small>
+                <strong id="threatCount">0</strong>
+            </div>
+
+            <div class="risk-stat">
+                <small>INTEGRITY</small>
+                <strong id="integrity" class="status-good">Verified</strong>
+            </div>
+
+        </section>
+
+
+        <!-- TABS -->
+        <nav class="tabs">
+
+            <button type="button" class="tab active" data-tab="overview">
+                Overview
+            </button>
+
+            <button type="button" class="tab" data-tab="threats">
+                Threats
+            </button>
+
+            <button type="button" class="tab" data-tab="links">
+                Links
+            </button>
+
+            <button type="button" class="tab" data-tab="identity">
+                Identity
+            </button>
+
+            <button type="button" class="tab" data-tab="infrastructure">
+                Infrastructure
+            </button>
+
+            <button type="button" class="tab" data-tab="attachments">
+                Attachments
+            </button>
+
+            <button type="button" class="tab" data-tab="forensics">
+                Forensics
+            </button>
+
+        </nav>
+
+
+        <div class="result-content">
+
+            <!-- OVERVIEW -->
+            <section id="tab-overview" class="tab-panel active">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="section-kicker">EXECUTIVE ASSESSMENT</span>
+                        <h2>Investigation Summary</h2>
+                    </div>
+                </div>
+
+                <div class="summary-text" id="executiveSummary">—</div>
+
+                <div class="feature-row">
+
+                    <div>
+                        <span class="feature-icon">✓</span>
+                        <div>
+                            <strong>Evidence preserved</strong>
+                            <small>Original email securely preserved</small>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="feature-icon">✓</span>
+                        <div>
+                            <strong>Multi-layer analysis</strong>
+                            <small>Identity, network and behavior</small>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="feature-icon">✓</span>
+                        <div>
+                            <strong>Static attachment analysis</strong>
+                            <small>No attachment execution</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- THREATS -->
+            <section id="tab-threats" class="tab-panel">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="section-kicker">THREAT TRIAGE</span>
+                        <h2>Security Findings</h2>
+                    </div>
+                </div>
+
+                <div id="threatList"></div>
+
+            </section>
+
+
+            <!-- LINKS -->
+            <section id="tab-links" class="tab-panel">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="section-kicker">NETWORK INDICATORS</span>
+                        <h2>Extracted URLs</h2>
+                    </div>
+                </div>
+
+                <div id="urlList"></div>
+
+                <div class="subheading">DOMAINS</div>
+
+                <div id="domainList"></div>
+
+            </section>
+
+
+            <!-- IDENTITY -->
+            <section id="tab-identity" class="tab-panel">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="section-kicker">MESSAGE IDENTITY</span>
+                        <h2>Sender & Authentication</h2>
+                    </div>
+                </div>
+
+                <div class="identity-grid">
+
+                    <div>
+                        <small>FROM</small>
+                        <strong id="identitySender">—</strong>
+                    </div>
+
+                    <div>
+                        <small>REPLY-TO</small>
+                        <strong id="identityReplyTo">—</strong>
+                    </div>
+
+                    <div>
+                        <small>RETURN-PATH</small>
+                        <strong id="identityReturnPath">—</strong>
+                    </div>
+
+                </div>
+
+                <div class="data-section">
+                    <div class="subheading">AUTHENTICATION</div>
+                    <div id="authenticationFindings"></div>
+                </div>
+
+                <div class="data-section">
+                    <div class="subheading">IDENTITY FINDINGS</div>
+                    <div id="identityFindings"></div>
+                </div>
+
+            </section>
+
+
+            <!-- INFRASTRUCTURE -->
+            <section id="tab-infrastructure" class="tab-panel">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="section-kicker">INFRASTRUCTURE</span>
+                        <h2>Observed Network Origin</h2>
+                    </div>
+                </div>
+
+                <p class="description">
+                    Infrastructure associated with the observed IP.
+                    This does not identify a person's physical location.
+                </p>
+
+                <div class="infra-table">
+
+                    <div>
+                        <small>IP ADDRESS</small>
+                        <strong id="senderIp">Not identified</strong>
+                    </div>
+
+                    <div>
+                        <small>COUNTRY</small>
+                        <strong id="senderCountry">Not available</strong>
+                    </div>
+
+                    <div>
+                        <small>REGION</small>
+                        <strong id="senderRegion">Not available</strong>
+                    </div>
+
+                    <div>
+                        <small>CITY</small>
+                        <strong id="senderCity">Not available</strong>
+                    </div>
+
+                    <div>
+                        <small>ISP / ORGANIZATION</small>
+                        <strong id="senderIsp">Not available</strong>
+                    </div>
+
+                    <div>
+                        <small>ASN</small>
+                        <strong id="senderAsn">Not available</strong>
+                    </div>
+
+                    <div>
+                        <small>HOSTNAME</small>
+                        <strong id="senderHostname">Not available</strong>
+                    </div>
+
+                </div>
+
+                <div class="source-line">
+                    <span>SOURCE</span>
+                    <strong id="geoSource">Passive infrastructure intelligence</strong>
+                </div>
+
+            </section>
+
+
+            <!-- ATTACHMENTS -->
+            <section id="tab-attachments" class="tab-panel">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="section-kicker">STATIC FORENSICS</span>
+                        <h2>Attachment Analysis</h2>
+                    </div>
+                </div>
+
+                <p class="description">
+                    Attachments are inspected without executing them.
+                </p>
+
+                <div id="attachmentList"></div>
+
+            </section>
+
+
+            <!-- FORENSICS -->
+            <section id="tab-forensics" class="tab-panel">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="section-kicker">FORENSIC RECONSTRUCTION</span>
+                        <h2>What happened?</h2>
+                    </div>
+                </div>
+
+                <div class="summary-text" id="forensicSummary">—</div>
+
+                <div class="forensic-section">
+                    <div class="subheading">MESSAGE JOURNEY</div>
+                    <div id="timelineList"></div>
+                </div>
+
+                <div class="forensic-section">
+                    <div class="subheading">WHAT WOULD CHANGE THE VERDICT?</div>
+                    <div id="counterfactualList"></div>
+                </div>
+
+                <div class="forensic-section">
+                    <div class="subheading">EVIDENCE RELATIONSHIPS</div>
+                    <div id="attackGraph"></div>
+                </div>
+
+                <div class="forensic-section">
+                    <div class="subheading">CHAIN OF CUSTODY</div>
+                    <div id="custodyList"></div>
+                </div>
+
+            </section>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="/app.js"></script>
+
+</body>
+</html>
